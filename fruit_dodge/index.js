@@ -20,13 +20,13 @@ function draw() {
         fruits[i].show();
         fruits[i].update();
 
-        if (player.hits(fruits[i])) {
+        if (player.collides(fruits[i])) {
             console.log("You lose");
             initialize();
             return false;
         }
   
-        if (fruits[i].outOfScreen()) {
+        if (fruits[i].outOfCanvas()) {
             fruits.splice(i, 1);
             player.score ++;
         }
@@ -44,7 +44,7 @@ function draw() {
   }
 
 function keyPressed() {
-    if (((keyCode === UP_ARROW) || (keyCode === 87)) && player.onBottom()) {
+    if (((keyCode === UP_ARROW) || (keyCode === 87)) && player.onLowerEdge()) {
         player.jump();
     } 
     
@@ -92,7 +92,7 @@ class Player {
         // this.grow = function() {
         //     this.playerHeight += 50;
         // }
-        this.onBottom = function () {
+        this.onLowerEdge = function () {
             return this.y == (height - this.playerHeight);
         };
 
@@ -112,7 +112,7 @@ class Player {
             }
         };
 
-        this.hits = function (fruit) {
+        this.collides = function (fruit) {
             // return collideRectRect(this.x,this.y,this.r,this.r,obs.x,obs.y,obs.w,obs.h)
             return collideRectRect(this.x, this.y, this.playerWidth, this.playerHeight, fruit.x, fruit.y, fruit.size, fruit.size);
         };
@@ -136,7 +136,7 @@ class Fruit {
             this.x -= this.speed;
         };
 
-        this.outOfScreen = function () {
+        this.outOfCanvas = function () {
             return (this.x < -this.size ? true : false);
         };
     }
